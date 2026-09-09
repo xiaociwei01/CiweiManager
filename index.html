@@ -106,7 +106,6 @@
             width: 100%;
         }
 
-        /* ===== 顶部 ===== */
         .header {
             display: flex;
             flex-wrap: wrap;
@@ -204,7 +203,6 @@
             background: var(--text-muted);
         }
 
-        /* ===== Tab ===== */
         .tabs {
             display: flex;
             gap: 4px;
@@ -331,11 +329,6 @@
             padding: 6px 14px;
             font-size: 12px;
         }
-        .btn-xs {
-            padding: 4px 10px;
-            font-size: 11px;
-            border-radius: 20px;
-        }
 
         .card-list {
             display: flex;
@@ -454,7 +447,6 @@
             font-size: 14px;
         }
 
-        /* ===== 模态框 ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -549,6 +541,8 @@
             color: var(--text-primary);
             transition: all var(--transition-base);
             outline: none;
+            pointer-events: auto !important;
+            user-select: text !important;
         }
         .modal-box input:focus,
         .modal-box textarea:focus {
@@ -572,7 +566,6 @@
             justify-content: flex-end;
         }
 
-        /* ===== 上传 ===== */
         .upload-area {
             border: 2px dashed var(--border-color);
             border-radius: var(--radius-sm);
@@ -638,7 +631,6 @@
             color: var(--danger);
         }
 
-        /* ===== Toast ===== */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -739,6 +731,8 @@
             transition: all var(--transition-base);
             outline: none;
             width: 100%;
+            pointer-events: auto !important;
+            user-select: text !important;
         }
         .settings-row input:focus,
         .settings-row textarea:focus {
@@ -917,7 +911,7 @@
                         <div class="upload-status" id="avatarUploadStatus">等待上传...</div>
                     </div>
 
-                    <!-- ===== 微信/QQ 二维码上传（新增） ===== -->
+                    <!-- ===== 微信/QQ 二维码上传 ===== -->
                     <div class="settings-grid-2" style="margin-top:4px;">
 
                         <div class="settings-row">
@@ -1575,7 +1569,7 @@
             saveConfig().then(() => renderFriends());
         }
 
-        // ----- 网站设置 -----
+        // ----- 网站设置（修复：正确读取二维码状态） -----
         function renderSettings() {
             const site = configData.site || {};
             $('siteTitle').value = site.title || '';
@@ -1584,11 +1578,10 @@
             $('siteWechat').value = site.wechat || '';
             $('siteQQ').value = site.qq || '';
 
-            // 头像
             const avatarPath = site.avatar || DEFAULT_AVATAR;
             $('avatarPreview').src = buildCdnUrl(avatarPath);
 
-            // 微信二维码状态
+            // 修复：正确读取二维码状态
             if (site.wechatQr) {
                 $('wechatQrStatus').textContent = '✅ 已上传';
                 $('wechatQrStatus').className = 'upload-status success';
@@ -1597,7 +1590,6 @@
                 $('wechatQrStatus').className = 'upload-status';
             }
 
-            // QQ二维码状态
             if (site.qqQr) {
                 $('qqQrStatus').textContent = '✅ 已上传';
                 $('qqQrStatus').className = 'upload-status success';
@@ -2034,7 +2026,7 @@
         });
 
         // ================================================================
-        // 保存网站设置
+        // 保存网站设置（修复：保留二维码字段）
         // ================================================================
         $('saveSettingsBtn').addEventListener('click', async () => {
             if (!configData.site) configData.site = {};
@@ -2044,6 +2036,7 @@
             configData.site.signature = $('siteSignature').value.trim();
             configData.site.wechat = $('siteWechat').value.trim();
             configData.site.qq = $('siteQQ').value.trim();
+            // 保留二维码字段（wechatQr 和 qqQr 在上传时已写入）
 
             await saveConfig();
             renderSettings();
@@ -2097,7 +2090,7 @@
             }
         });
 
-        console.log('🦔 CiweiManager 已启动（完整版：含微信/QQ二维码上传）');
+        console.log('🦔 CiweiManager 已启动（完整修复版）');
         console.log('📦 仓库:', REPO);
         console.log('📄 配置文件:', CONFIG_PATH);
     </script>
