@@ -2,42 +2,21 @@
   "site": {
     "title": "🦔 刺猬的家",
     "subtitle": "独立开发者",
-    "avatar": "ciweitouxiang.jpg",
-    "signature": "本站点使用HTML+CSS+JavaScript语言开发 评论系统由Cusdis实现 已适配手机+平板+电脑设备\n本项目源码开源托管在GitHub 为图方便 已做页面根据当前网速自动跳转合适的链接 也可以手动切换\n我会时不时在\"开发者的小朋友圈\"板块更新自己的 \"发疯\"日常 欢迎随时看我\"发疯\" 本板块加载速度可能有点慢 请耐心等待",
+    "avatar": "images/avatar/avatar-1788918401177.jpg",
+    "signature": "本站点使用HTML+CSS+JavaScript语言开发...",
     "wechat": "As08_0831",
     "qq": "2586279833"
   },
-  "works": [
-    {
-      "id": "solar",
-      "name": "3D太阳系",
-      "enabled": true,
-      "cover": "xiaotaiyang.jpg",
-      "tags": "Three.js · 开普勒轨道 · 哈勃 · 旅行者一号",
-      "desc": "真实光照、椭圆轨道、行星轴倾斜、土星环、破坏工具箱、哈勃望远镜模式、旅行者一号深空飞行。",
-      "primaryLink": "https://xiaotaiyang.netlify.app",
-      "fallbackLink": "https://xiaociwei01.github.io/xiaotaiyang/"
-    },
-    {
-      "id": "lunar",
-      "name": "3D地月系",
-      "enabled": true,
-      "cover": "diyue.jpg",
-      "tags": "开普勒轨道 · 月相 · ISS · 天宫空间站",
-      "desc": "地球开普勒公转、节气跳转、日食/月食实时检测、月相模拟、ISS 与天宫双空间站、地轴倾斜。",
-      "primaryLink": "https://diyue.netlify.app",
-      "fallbackLink": "https://xiaociwei01.github.io/diyue/"
-    }
-  ],
+  "works": [],
   "friends": [
     {
-      "id": "2026-08-16-1430-1734567890",
-      "title": "欢迎来到小刺猬的朋友圈 🎉",
-      "date": "2026-08-16 14:30",
-      "content": "大家好！这里是小刺猬的朋友圈，我会在这里分享一些日常和想法。\n\n**欢迎常来看看！** 🦔",
-      "pinned": true,
+      "id": "mttf3un9j8ec",
+      "date": "2026/9/9 09:26:30",
+      "pinned": false,
       "images": [],
-      "videos": []
+      "videos": [],
+      "title": "新测试",
+      "content": "测试"
     }
   ]
 }
