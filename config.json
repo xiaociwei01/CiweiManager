@@ -3,7 +3,7 @@
     "title": "🦔 刺猬的家",
     "subtitle": "独立开发者",
     "avatar": "ciweitouxiang.jpg",
-    "signature": "本站点使用HTML+CSS+JavaScript语言开发...",
+    "signature": "做着玩玩",
     "wechat": "As08_0831",
     "qq": "2586279833"
   },
@@ -17,17 +17,6 @@
       "videos": [],
       "title": "新测试",
       "content": "测试"
-    },
-    {
-      "id": "mttm2e9pct95",
-      "date": "2026-09-09 12:41",
-      "pinned": false,
-      "images": [
-        "images/friends/media-1788928880317-eha8.jpg"
-      ],
-      "videos": [],
-      "title": "测试",
-      "content": "新测试"
     }
   ]
 }
