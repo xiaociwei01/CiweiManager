@@ -8,5 +8,17 @@
     "qq": "2586279833"
   },
   "works": [],
-  "friends": []
+  "friends": [
+    {
+      "id": "mttl50qo5g2c",
+      "date": "2026-09-09 12:15",
+      "pinned": false,
+      "images": [
+        "images/friends/media-1788927323136-nf07.jpg"
+      ],
+      "videos": [],
+      "title": "测试",
+      "content": "测试图片"
+    }
+  ]
 }
