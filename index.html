@@ -917,6 +917,31 @@
                         <div class="upload-status" id="avatarUploadStatus">等待上传...</div>
                     </div>
 
+                    <!-- ===== 微信/QQ 二维码上传（新增） ===== -->
+                    <div class="settings-grid-2" style="margin-top:4px;">
+
+                        <div class="settings-row">
+                            <label>📱 微信二维码图片</label>
+                            <div class="upload-area" id="wechatQrUpload">
+                                <span class="upload-icon">📱</span>
+                                <span class="upload-text">点击上传微信二维码</span>
+                                <input type="file" accept="image/*" id="wechatQrInput" />
+                            </div>
+                            <div class="upload-status" id="wechatQrStatus">等待上传...</div>
+                        </div>
+
+                        <div class="settings-row">
+                            <label>🐧 QQ二维码图片</label>
+                            <div class="upload-area" id="qqQrUpload">
+                                <span class="upload-icon">🐧</span>
+                                <span class="upload-text">点击上传QQ二维码</span>
+                                <input type="file" accept="image/*" id="qqQrInput" />
+                            </div>
+                            <div class="upload-status" id="qqQrStatus">等待上传...</div>
+                        </div>
+
+                    </div>
+
                     <div class="settings-grid-2">
                         <div class="settings-row">
                             <label>微信</label>
@@ -1234,7 +1259,9 @@
                             avatar: DEFAULT_AVATAR,
                             signature: '本站点使用 HTML+CSS+JavaScript 语言开发...',
                             wechat: 'As08_0831',
-                            qq: '2586279833'
+                            qq: '2586279833',
+                            wechatQr: '',
+                            qqQr: ''
                         },
                         works: [],
                         friends: []
@@ -1548,7 +1575,7 @@
             saveConfig().then(() => renderFriends());
         }
 
-        // ----- 网站设置（关键修复） -----
+        // ----- 网站设置 -----
         function renderSettings() {
             const site = configData.site || {};
             $('siteTitle').value = site.title || '';
@@ -1560,6 +1587,24 @@
             // 头像
             const avatarPath = site.avatar || DEFAULT_AVATAR;
             $('avatarPreview').src = buildCdnUrl(avatarPath);
+
+            // 微信二维码状态
+            if (site.wechatQr) {
+                $('wechatQrStatus').textContent = '✅ 已上传';
+                $('wechatQrStatus').className = 'upload-status success';
+            } else {
+                $('wechatQrStatus').textContent = '等待上传...';
+                $('wechatQrStatus').className = 'upload-status';
+            }
+
+            // QQ二维码状态
+            if (site.qqQr) {
+                $('qqQrStatus').textContent = '✅ 已上传';
+                $('qqQrStatus').className = 'upload-status success';
+            } else {
+                $('qqQrStatus').textContent = '等待上传...';
+                $('qqQrStatus').className = 'upload-status';
+            }
         }
 
         // ================================================================
@@ -1913,7 +1958,83 @@
         });
 
         // ================================================================
-        // 保存网站设置（修复：读取表单→更新 configData→保存→重新渲染）
+        // 微信二维码上传
+        // ================================================================
+        $('wechatQrUpload').addEventListener('click', () => $('wechatQrInput').click());
+        $('wechatQrInput').addEventListener('change', async function(e) {
+            if (!this.files.length) return;
+            const file = this.files[0];
+            const status = $('wechatQrStatus');
+            status.textContent = '⏳ 上传中...';
+            status.className = 'upload-status';
+
+            try {
+                const ext = file.name.split('.').pop().toLowerCase();
+                const filename = `wechat_qr_${Date.now()}.${ext}`;
+                const path = `images/qr/${filename}`;
+                const base64 = await readFileAsBase64(file);
+                const uploadedPath = await uploadFileToGitHub(path, base64, '上传微信二维码');
+                if (!uploadedPath) {
+                    status.textContent = '❌ 上传失败';
+                    status.className = 'upload-status error';
+                    return;
+                }
+                const oldPath = configData.site?.wechatQr;
+                if (oldPath && oldPath !== 'wechat_qr.jpg' && !oldPath.startsWith('http')) {
+                    await deleteFileFromGitHub(oldPath, '删除旧微信二维码');
+                }
+                if (!configData.site) configData.site = {};
+                configData.site.wechatQr = uploadedPath;
+                await saveConfig();
+                status.textContent = '✅ 已上传';
+                status.className = 'upload-status success';
+                showToast('✅ 微信二维码已更新');
+            } catch (err) {
+                status.textContent = '❌ ' + err.message;
+                status.className = 'upload-status error';
+            }
+        });
+
+        // ================================================================
+        // QQ二维码上传
+        // ================================================================
+        $('qqQrUpload').addEventListener('click', () => $('qqQrInput').click());
+        $('qqQrInput').addEventListener('change', async function(e) {
+            if (!this.files.length) return;
+            const file = this.files[0];
+            const status = $('qqQrStatus');
+            status.textContent = '⏳ 上传中...';
+            status.className = 'upload-status';
+
+            try {
+                const ext = file.name.split('.').pop().toLowerCase();
+                const filename = `qq_qr_${Date.now()}.${ext}`;
+                const path = `images/qr/${filename}`;
+                const base64 = await readFileAsBase64(file);
+                const uploadedPath = await uploadFileToGitHub(path, base64, '上传QQ二维码');
+                if (!uploadedPath) {
+                    status.textContent = '❌ 上传失败';
+                    status.className = 'upload-status error';
+                    return;
+                }
+                const oldPath = configData.site?.qqQr;
+                if (oldPath && oldPath !== 'qq_qr.jpg' && !oldPath.startsWith('http')) {
+                    await deleteFileFromGitHub(oldPath, '删除旧QQ二维码');
+                }
+                if (!configData.site) configData.site = {};
+                configData.site.qqQr = uploadedPath;
+                await saveConfig();
+                status.textContent = '✅ 已上传';
+                status.className = 'upload-status success';
+                showToast('✅ QQ二维码已更新');
+            } catch (err) {
+                status.textContent = '❌ ' + err.message;
+                status.className = 'upload-status error';
+            }
+        });
+
+        // ================================================================
+        // 保存网站设置
         // ================================================================
         $('saveSettingsBtn').addEventListener('click', async () => {
             if (!configData.site) configData.site = {};
@@ -1925,7 +2046,6 @@
             configData.site.qq = $('siteQQ').value.trim();
 
             await saveConfig();
-            // 重新渲染设置面板，确保表单显示最新数据
             renderSettings();
             showToast('✅ 设置已保存');
         });
@@ -1977,7 +2097,7 @@
             }
         });
 
-        console.log('🦔 CiweiManager 已启动 (修复版)');
+        console.log('🦔 CiweiManager 已启动（完整版：含微信/QQ二维码上传）');
         console.log('📦 仓库:', REPO);
         console.log('📄 配置文件:', CONFIG_PATH);
     </script>
